@@ -1,10 +1,10 @@
 {
     "name": "hedera-browser-extension",
-    "version": "0.9.31",
+    "version": "0.9.33",
     "description": "Hedera browser extension to manage micropayments",
-    "private": true,
     "dependencies": {
         "debug": "^4.1.1",
+        "decimal.js": "^10.2.0",
         "detect-node": "^2.0.4",
         "dexie": "^3.0.0-alpha.6",
         "dinero.js": "^1.6.0",
@@ -29,6 +29,7 @@
         "babel-jest": "^24.7.1",
         "babel-loader": "^8.0.5",
         "clean-webpack-plugin": "^2.0.1",
+        "codecov": "^3.5.0",
         "copy-webpack-plugin": "^5.0.3",
         "css-loader": "^2.1.1",
         "dotenv": "^7.0.0",
@@ -61,6 +62,7 @@
         "build": "npm run build-staging && npm run zip-staging && npm run build-prod && npm run zip-prod",
         "test": "jest",
         "test:coverage": "jest --config jest.cov.config.js",
+        "codecov": "codecov",
         "test:clear": "jest --clearCache",
         "fix": "npm run fix:code && npm run fix:styles",
         "fix:code": "prettier-eslint --write 'src/**/*.{js,jsx}'",

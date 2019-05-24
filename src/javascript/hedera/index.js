@@ -7,10 +7,9 @@ import getAccountBalance from './getaccountbalance'
 import cryptoTransfer from './cryptotransfer'
 import getTransactionReceipts from './gettransactionreceipts'
 import fileGetContents from './filegetcontents'
-import contractTag from './tags/contracttagvalidation'
-import micropaymentTag from './tags/micropaymenttagvalidation'
 import contractCall from './contractcall'
 import cryptoGetInfo from './cryptogetinfo'
+
 /**
  * @module Hedera
  */
@@ -34,27 +33,6 @@ class Hedera {
         this.clientFile = build.clientFile
         this.nodeAccountID = build.nodeAccountID
         this.operator = build.operator
-    }
-
-    /**
-     * contract checks whether the HTML document of a website contains a hedera-contract tag.
-     * It returns the assembled tag json if it exists, or returns null if it does not exist, or false if the tag is invalid
-     * @param {document} document a HTML document object that contains a hedera-contract tag.
-     * @returns {Object} an object OR null OR false
-     */
-    static contract(document, currentExtensionId) {
-        return contractTag.validate(document, currentExtensionId)
-    }
-    /**
-     *
-     * micropayment checks whether the HTML document of a website contains a hedera-micropayment tag.
-     * It returns the assembled tag json if it exists, or returns null if it does not exist, or false if the tag is invalid
-     * @param {Object} document a HTML document object that contains a hedera-micropayment tag.
-     * @param {string} currentExtensionId - derived from chrome.runtime.id as a string
-     * @returns {Object} an object OR null OR false
-     */
-    static micropayment(document, currentExtensionId) {
-        return micropaymentTag.validate(document, currentExtensionId)
     }
 
     /**
@@ -106,10 +84,22 @@ class Hedera {
      * @param {string} account is the account whom we are querying the account balance from. It is a string delimited by dot, of the format 'shardNum.realmNum.accountNum'.
      * @param {string} memo is an optional string memo.
      * @param {Object} resType is a Hedera QueryHeader ResponseType.
+     * @param {boolean} generateRecord is a boolean to indicate whether records are to be stored in Hedera.
      */
-    getAccountBalance(account, memo = '', resType = rt.ANSWER_ONLY) {
+    getAccountBalance(
+        account,
+        memo = '',
+        resType = rt.ANSWER_ONLY,
+        generateRecord = false
+    ) {
         this._type = 'query'
-        this._data = getAccountBalance(this, account, memo, resType)
+        this._data = getAccountBalance(
+            this,
+            account,
+            memo,
+            resType,
+            generateRecord
+        )
         return this
     }
 
@@ -133,6 +123,7 @@ class Hedera {
      * @param {object} recipientList refers to the list of accounts receiving the payment. It is a list in that contains ie: [{tinybars: amount, to:recipient}].
      * @param {string=} memo is an optional memo string.
      * @param {number} fee is service fee to Hedera nodes.
+     * @param {boolean} generateRecord is a boolean to indicate whether records are to be stored in Hedera.
      */
     cryptoTransfer(
         senderAccount,
@@ -140,7 +131,8 @@ class Hedera {
         amount,
         recipientList,
         memo,
-        fee
+        fee,
+        generateRecord = false
     ) {
         this._type = 'transaction'
         let tx = cryptoTransfer(
@@ -150,16 +142,25 @@ class Hedera {
             amount,
             recipientList,
             memo,
-            fee
+            fee,
+            generateRecord
         )
         this._data = tx
         this._id = tx.getBody().getTransactionid()
         return this
     }
 
-    cryptoGetInfo(account, memo, resType) {
+    /**
+     *
+     * cryptoGetInfo retrieve the solidity contract address
+     * @param {string} account is the account whom we are querying the account balance from. It is a string delimited by dot, of the format 'shardNum.realmNum.accountNum'.
+     * @param {string} memo is an optional string memo.
+     * @param {Object} resType is a Hedera QueryHeader ResponseType.
+     * @param {boolean} generateRecord is a boolean to indicate whether records are to be stored in Hedera.
+     */
+    cryptoGetInfo(account, memo, resType, generateRecord) {
         this._type = 'query'
-        let q = cryptoGetInfo(this, account, memo, resType)
+        let q = cryptoGetInfo(this, account, memo, resType, generateRecord)
         this._data = q
         return this
     }
@@ -174,7 +175,29 @@ class Hedera {
         return this
     }
 
-    contractCall(contract, gas, amount, sender, functionParams, memo, fee) {
+    /**
+     *
+     * contractCall is a solidity smart contract call to Hedera network.
+     * Its parameters are currently parsed in through a hedera-contract tag
+     * @param {string} contract refers to the contract account. It is a string delimited by dot, of the format 'shardNum.realmNum.accountNum'.
+     * @param {number} gas the
+     * @param {number} amount is a number, designating the amount that is transferred from sender to recipient.
+     * @param {string} sender refers to the paying account. It is a string delimited by dot, of the format 'shardNum.realmNum.accountNum'.
+     * @param {Object} functionParams
+     * @param {string=} memo is an optional memo string.
+     * @param {number} fee is service fee to Hedera nodes.
+     * @param {boolean} generateRecord is a boolean to indicate whether records are to be stored in Hedera.
+     */
+    contractCall(
+        contract,
+        gas,
+        amount,
+        sender,
+        functionParams,
+        memo,
+        fee,
+        generateRecord = false
+    ) {
         this._type = 'transaction'
         let tx = contractCall(
             this,
@@ -184,7 +207,8 @@ class Hedera {
             sender,
             functionParams,
             memo,
-            fee
+            fee,
+            generateRecord
         )
         this._data = tx
         this._id = tx.getBody().getTransactionid()

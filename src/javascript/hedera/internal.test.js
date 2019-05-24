@@ -305,3 +305,17 @@ test('Check if attribute is present and valid', () => {
     result = i.contractIdExistsAndIsValid('0.0.1')
     expect(result).toBeTruthy()
 })
+
+test('validMemoBytes', () => {
+    const validatedMemo = i.validMemoBytes('this is a message')
+    expect(validatedMemo).toEqual('this is a message')
+
+    const validatedMemo1 = i.validMemoBytes('123456789')
+    expect(validatedMemo1).toEqual('123456789')
+
+    expect(() => {
+        i.validMemoBytes(
+            '1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40'
+        )
+    }).toThrowError('Memo must be less than 100 bytes')
+})

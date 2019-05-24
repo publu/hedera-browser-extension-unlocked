@@ -56,7 +56,9 @@ async function cryptoTransferController(micropayment, port, urlString) {
     // recipient details
     let recipientList = micropayment.recipientList
     let amount = i.getSumOfTransfer(recipientList)
-    let memo = micropayment.memo
+    // validate memo < 100 bytes
+    let memo = i.validMemoBytes(micropayment.memo)
+
     let mps = micropayment.paymentServer
     let fee = TRANSACTION_FEE
     log('submissionNode parsed in is: ', micropayment.submissionNode)
@@ -106,6 +108,15 @@ async function cryptoTransferController(micropayment, port, urlString) {
         count = count + 1
     })
 
+    socket.on('reconnect', () => {
+        log('Payment Server is available')
+    })
+
+    socket.on('connect_error', () => {
+        log('Payment Server is NOT available')
+        // we can implement a warning in the UI if needed
+    })
+
     log('CRYPTOTRANSFER execute: cryptoTransferController')
     socket.binary(true).emit(CRYPTOTRANSFER, tx.data)
 
@@ -143,6 +154,27 @@ async function cryptoTransferController(micropayment, port, urlString) {
         if (res.receiptStatus === ResponseCodeEnum.SUCCESS) data.receipt = true
         indexedDBSave(data, port)
         socket.disconnect()
+    })
+
+    // // socket.io builtin event
+    // socket.on('error', function (e) {
+    //     log('Socket connection error: ', e)
+    // })
+
+    socket.on('PAYMENTSERVERERROR', function(text) {
+        log('Payment server connection error: ', text)
+    })
+
+    // socket.on('error', function () {
+    //     //Socket IO won't reconnect to a host that it has already tried, unless option specified
+    //     socket = io.connect(host, {
+    //         'force new connection': true
+    //     });
+    // });
+
+    // socket.io builtin event
+    socket.on('disconnect', function() {
+        log('Socket disconnected')
     })
 
     socket.open()

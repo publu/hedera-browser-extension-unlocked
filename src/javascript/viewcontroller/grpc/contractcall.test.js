@@ -1,14 +1,13 @@
-import Hedera from '../hedera'
-import addressbook from '../hedera/address-book'
-import dotenv from 'dotenv'
-import { TransactionBody } from '../../pbweb/TransactionBody_pb'
+import Hedera from '../../hedera'
+import addressbook from '../../hedera/address-book'
+import { TransactionBody } from '../../../pbweb/TransactionBody_pb'
 import io from 'socket.io-client'
 import debug from 'debug'
-import { enumKeyByValue } from './utils'
+import { enumKeyByValue, hexStringToUint8Array } from '../../hedera/utils'
 import { AbiCoder } from 'web3-eth-abi'
 import { JSDOM } from 'jsdom'
 import path from 'path'
-import i from '../hedera/internal'
+import i from '../../hedera/internal'
 
 // DEBUG=test:contractcall npm test src/javascript/hedera/contractcall.test.js
 const log = debug('test:contractcall')
@@ -20,7 +19,7 @@ let socket
 let paymentServer = process.env.TEST_PAYMENTSERVER
 
 beforeEach(done => {
-    if (paymentServer === undefined) {
+    if (SKIP_NETWORK_TESTS) {
         done()
         return
     }
@@ -42,7 +41,7 @@ beforeEach(done => {
 })
 
 afterEach(done => {
-    if (paymentServer === undefined) {
+    if (SKIP_NETWORK_TESTS) {
         done()
         return
     }
@@ -54,6 +53,10 @@ afterEach(done => {
 })
 
 test('contractcall test', async done => {
+    if (SKIP_NETWORK_TESTS) {
+        done()
+        return
+    }
     const testaccount = {
         accountID: process.env.TEST_ACCOUNTID,
         publicKey: process.env.TEST_PUBLICKEY,
@@ -97,7 +100,7 @@ test('contractcall test', async done => {
     // retrieve test HTML from testdata directory and pass it to JSDOM
     let testFile = path.join(
         __dirname,
-        'testdata',
+        '../../hedera-tags/testdata',
         'contractcallexample1_valid.html'
     )
     let dom = await JSDOM.fromFile(testFile)
@@ -114,18 +117,20 @@ test('contractcall test', async done => {
     log(result.params)
 
     const abiCoder = new AbiCoder()
-    const functionParams = abiCoder
+    const functionParamsHex = abiCoder
         .encodeFunctionCall(result.abi, result.params)
         .slice(2) // additionally remove the first byte "0x" which denotes a hex string as it fails in other languages
+    const functionParams = hexStringToUint8Array(functionParamsHex)
 
     const gas = result.params[2]
     const amount = gas
     const fee = 100000
     const contract = '0.0.1604' // hard-coded contract id. change this to the one Nik uses
+    let memo = i.validMemoBytes('micropayment.memo')
 
     // contract, gas, amount, sender, functionParams, memo, fee
     let tx = client
-        .contractCall(contract, gas, amount, sender, functionParams, '', fee)
+        .contractCall(contract, gas, amount, sender, functionParams, memo, fee)
         .prepare()
 
     if (paymentServer === undefined) {
@@ -145,7 +150,10 @@ test('contractcall test', async done => {
         socket.binary(true).emit(CONTRACTCALL, tx.data)
         socket.on(`${CONTRACTCALL}_RESPONSE`, async function(res) {
             log('res', res)
+            socket.on('disconnect', () => {
+                log('disconnected')
+            })
+            done()
         })
-        done()
     })
 })

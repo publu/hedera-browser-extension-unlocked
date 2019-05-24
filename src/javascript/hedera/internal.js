@@ -384,6 +384,19 @@ function longToByteArray(long) {
     return byteArray.reverse()
 }
 
+function validMemoBytes(memo) {
+    // validate 100 bytes and below only
+    let memoInChar = memo.length
+    log('memoInChar', memoInChar)
+    let memoInBytes = Buffer.byteLength(memo, 'utf8')
+    log('memoInBytes', memoInBytes)
+    if (memoInBytes < 100) {
+        return memo
+    }
+    // memo is too long, throw error or false
+    throw new Error('Memo must be less than 100 bytes')
+}
+
 export default {
     accountIDFromString,
     accountStringFromAccountID,
@@ -400,5 +413,6 @@ export default {
     randNodeAddr,
     nodeAddr,
     longToByteArray,
-    contractIdExistsAndIsValid
+    contractIdExistsAndIsValid,
+    validMemoBytes
 }
