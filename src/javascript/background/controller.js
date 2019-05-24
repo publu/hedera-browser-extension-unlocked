@@ -58,10 +58,12 @@ const manageStateSmartContract = async (url, response) => {
                 if (ENV_NAME === 'development') {
                     handleSmartContract =
                         url.origin === 'https://hash-hash.info' ||
-                        url.origin === 'https://localhost:8443'
+                        url.origin === 'https://localhost:8443' ||
+                        url.origin === 'https://staging.hash-hash.info'
                 } else {
                     handleSmartContract =
-                        url.origin === 'https://hash-hash.info'
+                        url.origin === 'https://hash-hash.info' ||
+                        url.origin === 'https://staging.hash-hash.info'
                 }
 
                 if (handleSmartContract) {

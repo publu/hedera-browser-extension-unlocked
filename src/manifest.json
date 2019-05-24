@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Hedera Browser Extension",
     "short_name": "Hedera",
-    "version": "0.9.32",
+    "version": "0.9.33",
     "description": "This extension makes micropayments from your Hedera account",
     "icons": {
         "128": "icons/Ext-Icon-Configured-128x128.png",
@@ -32,21 +32,7 @@
         "contextMenus",
         "activeTab",
         "cookies",
-        "http://127.0.0.1/*",
-        "http://localhost:3000/*",
-        "http://localhost:8000/*",
-        "http://localhost:8080/*",
-        "http://localhost:8099/*",
-        "http://localhost:9000/*",
-        "https://localhost:8443/*",
-        "https://localhost:2053/*",
-        "http://localhost:9090/*",
-        "http://*.dailytimestamp.com/*",
-        "https://*.dailytimestamp.com/*",
-        "http://*.thetimesta.mp/*",
-        "https://*.thetimesta.mp/*",
-        "http://*.hash-hash.info/*",
-        "https://*.hash-hash.info/*"
+        "<all_urls>"
     ],
     "web_accessible_resources": ["html/banner.html", "icons/icon16.png"],
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
