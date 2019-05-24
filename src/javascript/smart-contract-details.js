@@ -2,7 +2,11 @@ import { getLocalStorage } from './models/db'
 import { tabsQuery } from './chrome-promise'
 import { buttonState } from './ui-utils/buttons'
 import getContractCallController from './viewcontroller/grpc/contractcall'
-import { tinyBarsToHBarsCurr, tinyBarsToDollarsUnit } from './hedera/currency'
+import {
+    tinyBarsToHBarsCurr,
+    tinyBarsToDollarsUnit,
+    tinyBarsToHBarsUnit
+} from './hedera/currency'
 import debug from 'debug'
 
 const log = debug('all:smart-contract-details')
@@ -30,41 +34,60 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // locate our dom elements (UI elements)
+    let contractIDEl = document.getElementById('contract-id')
+    let totalCostEl = document.getElementById('total-cost')
     let transactionCostEl = document.getElementById('transaction-cost')
     let propertyLocationEl = document.getElementById('property-location')
+    let purchasedPriceEl = document.getElementById('purchased-price')
     let acceptButtonEl = document.getElementById('accept')
     // what about the deny button? What if the user clicks on "deny"? TODO?
 
     // assign the params
     if (contractTag !== undefined) {
         let params = contractTag.params
+        let contractid = contractTag.contractid
+        let amountInUsdObj
+        let amountInHbar
         if (transactionCostEl !== undefined) {
-            let amountInUsdObj = tinyBarsToDollarsUnit(200000)
-            let amountInHbar = tinyBarsToHBarsCurr(200000)
-            document.getElementById('transaction-cost').value =
-                `$ ${amountInUsdObj.toNumber()}` + ' / ' + amountInHbar
+            amountInUsdObj = tinyBarsToDollarsUnit(200000)
+            amountInHbar = tinyBarsToHBarsUnit(200000)
+            transactionCostEl.value =
+                `$ ${amountInUsdObj.toNumber()}` +
+                ' / ' +
+                `${amountInHbar.toPrecision(8)} ℏ`
         }
         let x = params[2]
         let y = params[3]
         let propertyLocation = 'x: ' + x + ', y: ' + y
         if (propertyLocationEl !== undefined) {
-            document.getElementById(
-                'property-location'
-            ).value = propertyLocation
+            propertyLocationEl.value = propertyLocation
         }
 
         let starPrice = params[1]
+        let purchasedPriceInUsdObj
+        let purchasedPriceInHbar
         if (starPrice !== undefined) {
-            let purchasedPriceInUsdObj = tinyBarsToDollarsUnit(
+            purchasedPriceInUsdObj = tinyBarsToDollarsUnit(
                 parseInt(starPrice) + 200000
             )
             let purchasedPriceInUsd = `$${purchasedPriceInUsdObj.toNumber()}`
-            let purchasedPriceInHbar = tinyBarsToHBarsCurr(
+            purchasedPriceInHbar = tinyBarsToHBarsUnit(
                 parseInt(starPrice) + 200000
             )
-            document.getElementById('purchased-price').value =
-                purchasedPriceInUsd + ' / ' + purchasedPriceInHbar
+            purchasedPriceEl.value =
+                `$ ${purchasedPriceInUsd}` +
+                ' / ' +
+                `${purchasedPriceInHbar.toPrecision(8)} ℏ`
         }
+
+        contractIDEl.value = contractid
+        let totalCostHbars =
+            purchasedPriceInHbar.toNumber() + amountInHbar.toNumber()
+        totalCostEl.value =
+            `$ ${amountInUsdObj.toNumber() +
+                purchasedPriceInUsdObj.toNumber()}` +
+            ' / ' +
+            `${totalCostHbars.toFixed(8)} ℏ`
 
         if (acceptButtonEl !== undefined) {
             acceptButtonEl.onclick = async function(e) {

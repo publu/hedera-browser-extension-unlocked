@@ -105,9 +105,13 @@ async function getContractCallController(contractTag, urlString) {
         // To be completed once clarified
         socket.on(`${CONTRACTCALL}_RESPONSE`, async function(res) {
             log(`${CONTRACTCALL}_RESPONSE`, res)
-            // we will need to persist successful response into indexed-db
-            // and render a message to show user that the purchase is successful or not
-
+            try {
+                if (res.message === 'ok') {
+                    window.close()
+                }
+            } catch (e) {
+                log(e.message)
+            }
             socket.disconnect()
         })
     })
