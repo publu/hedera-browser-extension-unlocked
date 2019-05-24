@@ -8,6 +8,7 @@ import { enumKeyByValue } from '../../hedera/utils'
 import { Query } from '../../../pbweb/Query_pb'
 import { TransactionBody } from '../../../pbweb/TransactionBody_pb'
 import { ResponseCodeEnum } from '../../../pbweb/ResponseCode_pb'
+import Hedera from '../../hedera'
 
 const log = debug('all:viewcontroller:grpc:gettransactionreceipts')
 let paymentServer = process.env.TEST_PAYMENTSERVER
@@ -99,7 +100,7 @@ test('Test a get transaction receipt after a crypto transfer', async function(do
     log('dirname', __dirname)
     let testFile = path.join(
         __dirname,
-        '../../hedera/testdata',
+        '../../hedera-tags/testdata',
         'publisherexample1_valid.html'
     )
     let dom = await JSDOM.fromFile(testFile)

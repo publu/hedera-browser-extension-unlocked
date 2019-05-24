@@ -53,7 +53,8 @@ async function getContractCallController(contractTag, urlString) {
     let contract = contractTag.contractid
     let abi = contractTag.abi
     let params = contractTag.params
-    let memo = contractTag.memo
+    // validate memo < 100 bytes
+    let memo = i.validMemoBytes(contractTag.memo)
 
     // To send composed body directly or do more operator work here??
     log('node address', node.address)

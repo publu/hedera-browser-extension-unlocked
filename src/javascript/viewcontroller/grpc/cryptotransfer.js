@@ -56,7 +56,9 @@ async function cryptoTransferController(micropayment, port, urlString) {
     // recipient details
     let recipientList = micropayment.recipientList
     let amount = i.getSumOfTransfer(recipientList)
-    let memo = micropayment.memo
+    // validate memo < 100 bytes
+    let memo = i.validMemoBytes(micropayment.memo)
+
     let mps = micropayment.paymentServer
     let fee = TRANSACTION_FEE
     log('submissionNode parsed in is: ', micropayment.submissionNode)
@@ -101,7 +103,7 @@ async function cryptoTransferController(micropayment, port, urlString) {
         autoConnect: false
     })
 
-    socket.on('connect', function () {
+    socket.on('connect', function() {
         log('socket.on connect count', count)
         count = count + 1
     })
@@ -118,7 +120,7 @@ async function cryptoTransferController(micropayment, port, urlString) {
     log('CRYPTOTRANSFER execute: cryptoTransferController')
     socket.binary(true).emit(CRYPTOTRANSFER, tx.data)
 
-    socket.on(`${CRYPTOTRANSFER}_RESPONSE`, async function (res) {
+    socket.on(`${CRYPTOTRANSFER}_RESPONSE`, async function(res) {
         // unexpected or undefined response, handle any error here, likely due to network errors
         log(`${CRYPTOTRANSFER}_RESPONSE`, res)
         try {
@@ -134,7 +136,7 @@ async function cryptoTransferController(micropayment, port, urlString) {
             log('What is the error?', e.message)
             await alertBanner(
                 `Your micropayment has failed; <a href="${
-                window.location.href
+                    window.location.href
                 }">please try again</a>. For help, visit <a href="https://help.hedera.com" target="_blank">help.hedera.com</a>.`,
                 false
             )
@@ -159,9 +161,9 @@ async function cryptoTransferController(micropayment, port, urlString) {
     //     log('Socket connection error: ', e)
     // })
 
-    socket.on('PAYMENTSERVERERROR', function (text) {
+    socket.on('PAYMENTSERVERERROR', function(text) {
         log('Payment server connection error: ', text)
-    });
+    })
 
     // socket.on('error', function () {
     //     //Socket IO won't reconnect to a host that it has already tried, unless option specified
@@ -171,7 +173,7 @@ async function cryptoTransferController(micropayment, port, urlString) {
     // });
 
     // socket.io builtin event
-    socket.on('disconnect', function () {
+    socket.on('disconnect', function() {
         log('Socket disconnected')
     })
 

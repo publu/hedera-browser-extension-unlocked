@@ -100,7 +100,7 @@ test('contractcall test', async done => {
     // retrieve test HTML from testdata directory and pass it to JSDOM
     let testFile = path.join(
         __dirname,
-        '../../hedera/testdata',
+        '../../hedera-tags/testdata',
         'contractcallexample1_valid.html'
     )
     let dom = await JSDOM.fromFile(testFile)
@@ -126,10 +126,11 @@ test('contractcall test', async done => {
     const amount = gas
     const fee = 100000
     const contract = '0.0.1604' // hard-coded contract id. change this to the one Nik uses
+    let memo = i.validMemoBytes('micropayment.memo')
 
     // contract, gas, amount, sender, functionParams, memo, fee
     let tx = client
-        .contractCall(contract, gas, amount, sender, functionParams, '', fee)
+        .contractCall(contract, gas, amount, sender, functionParams, memo, fee)
         .prepare()
 
     if (paymentServer === undefined) {

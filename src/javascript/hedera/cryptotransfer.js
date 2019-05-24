@@ -70,7 +70,6 @@ function cryptoTransfer(
     txBody.setCryptotransfer(cryptoTransferTransactionBody)
     txBody.setNodeaccountid(self.nodeAccountID)
     txBody.setMemo(memo)
-
     // sign
     let txBodyBytes = txBody.serializeBinary()
     let privateKeyHex = self.operator.keypair.privateKey

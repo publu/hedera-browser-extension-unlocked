@@ -6,6 +6,8 @@ import { JSDOM } from 'jsdom'
 import path from 'path'
 import { enumKeyByValue } from '../../hedera/utils'
 import { TransactionBody } from '../../../pbweb/TransactionBody_pb'
+import Hedera from '../../hedera'
+import i from '../../hedera/internal'
 
 const log = debug('all:viewcontroller:grpc')
 let paymentServer = process.env.TEST_PAYMENTSERVER
@@ -97,13 +99,14 @@ test('Test a crypto transfer', async function(done) {
     log('dirname', __dirname)
     let testFile = path.join(
         __dirname,
-        '../../hedera/testdata',
+        '../../hedera-tags/testdata',
         'publisherexample1_valid.html'
     )
     let dom = await JSDOM.fromFile(testFile)
     let document = dom.window.document
     let result = HederaTag.micropayment(document)
-    const memo = 'blah'
+    let memo = i.validMemoBytes('micropayment.memo')
+
     const fee = TRANSACTION_FEE
     let tx = client
         .cryptoTransfer(sender, result.recipientList, memo, fee)

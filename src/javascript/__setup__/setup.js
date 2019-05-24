@@ -15,7 +15,7 @@ import FDBKeyRange from 'fake-indexeddb/lib/FDBKeyRange'
 import KeyPairing from '../models/key-pairing'
 import addressBook from '../hedera/address-book'
 
-const config = dotenv.config()
+const config = dotenv.config().parsed
 
 // mock local storage
 if (typeof global._localStorage !== 'undefined') {
