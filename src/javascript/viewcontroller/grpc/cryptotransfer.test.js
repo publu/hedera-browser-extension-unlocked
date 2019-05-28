@@ -118,7 +118,7 @@ test('Test a crypto transfer', async function(done) {
     socket.on('connect', function() {
         socket.binary(true).emit(CRYPTOTRANSFER, tx.data)
         socket.on(`${CRYPTOTRANSFER}_RESPONSE`, async function(res) {
-            console.log('RESPONSE is  ', await res)
+            log('RESPONSE is  ', await res)
             expect(res.nodePrecheckcode).toBe(0)
             expect(res.error).toBe(null)
             socket.on('disconnect', () => {

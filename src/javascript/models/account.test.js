@@ -46,17 +46,6 @@ test('getBalance 1', async () => {
     expect(all.USD).toBe('$0.00049800')
 })
 
-test('getBalance less than 999.9999 USD', async () => {
-    let a = await new Account().init(testAccount1)
-    await a.setBalance(99999999999)
-    expect(a.details.balance).toBe(99999999999)
-
-    let all = await a.getBalance()
-    expect(all.tinyBars).toBe(99999999999)
-    expect(all.hBars).toBe('999.99999999 ℏ')
-    expect(all.USD).toBe('$120.0000')
-})
-
 test('getBalance less than 0.000000999 USD', async () => {
     let a = await new Account().init(testAccount1)
     await a.setBalance(1)
@@ -66,6 +55,28 @@ test('getBalance less than 0.000000999 USD', async () => {
     expect(all.tinyBars).toBe(1)
     expect(all.hBars).toBe('0.00000001 ℏ')
     expect(all.USD).toBe('$0.0000000012')
+})
+
+test('getBalance less than 999.9999 USD', async () => {
+    let a = await new Account().init(testAccount1)
+    await a.setBalance(99999999999)
+    expect(a.details.balance).toBe(99999999999)
+
+    let all = await a.getBalance()
+    expect(all.tinyBars).toBe(99999999999)
+    expect(all.hBars).toBe('999.99999999 ℏ')
+    expect(all.USD).toBe('$120')
+})
+
+test('getBalance less than 999.9999 USD', async () => {
+    let a = await new Account().init(testAccount1)
+    await a.setBalance(94329999999)
+    expect(a.details.balance).toBe(94329999999)
+
+    let all = await a.getBalance()
+    expect(all.tinyBars).toBe(94329999999)
+    expect(all.hBars).toBe('943.29999999 ℏ')
+    expect(all.USD).toBe('$113.196')
 })
 
 test('getBalance less than 999.9999 USD', async () => {
@@ -81,13 +92,32 @@ test('getBalance less than 999.9999 USD', async () => {
 
 test('getBalance less than 99 999.9999 USD', async () => {
     let a = await new Account().init(testAccount1)
-    await a.setBalance(8983566329273)
-    expect(a.details.balance).toBe(8983566329273)
-
+    await a.setBalance(8993568329273)
+    expect(a.details.balance).toBe(8993568329273)
     let all = await a.getBalance()
-    expect(all.tinyBars).toBe(8983566329273)
-    expect(all.hBars).toBe('89835.66329273 ℏ')
-    expect(all.USD).toBe('$10780.280')
+    expect(all.tinyBars).toBe(8993568329273)
+    expect(all.hBars).toBe('89935.68329273 ℏ')
+    expect(all.USD).toBe('$10,792.282')
+})
+
+test('getBalance more than 99 999.9999 USD', async () => {
+    let a = await new Account().init(testAccount1)
+    await a.setBalance(103333333333325)
+    expect(a.details.balance).toBe(103333333333325)
+    let all = await a.getBalance()
+    expect(all.tinyBars).toBe(103333333333325)
+    expect(all.hBars).toBe('1033333.33333325 ℏ')
+    expect(all.USD).toBe('$124,000')
+})
+
+test('getBalance more than 99 999.9999 USD', async () => {
+    let a = await new Account().init(testAccount1)
+    await a.setBalance(100000194568179)
+    expect(a.details.balance).toBe(100000194568179)
+    let all = await a.getBalance()
+    expect(all.tinyBars).toBe(100000194568179)
+    expect(all.hBars).toBe('1000001.94568179 ℏ')
+    expect(all.USD).toBe('$120,000.23')
 })
 
 test('getBalance if details are undefined', async () => {

@@ -30,7 +30,7 @@ async function hostRuleViewController(hostname, document) {
 
     // when user changes the localThresholdDollars in the input field, update localThresholdBarsElem
     thresholdDollarsElem.oninput = function(e) {
-        if (e.target.value > 0) {
+        if (e.target.value >= 0) {
             let dollars = e.target.value
             let conversion = dollars * 100000000 * 100
             let rounded = conversion.toString().split('.')
@@ -45,7 +45,7 @@ async function hostRuleViewController(hostname, document) {
     // once user leaves the localThresholdDollars input field, we save the value in tinyBars (which is an integer number)
     thresholdDollarsElem.onblur = async function() {
         let value = thresholdDollarsElem.value
-        if (value > 0) {
+        if (value >= 0) {
             let tinyBarsObj = dollarsToTinyBarsUnit(value)
             await hostRule.setLimit(tinyBarsObj.toNumber())
         }

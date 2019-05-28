@@ -169,31 +169,39 @@ class Account extends AbstractLocalStorage {
             }
             // less than 999.9999 USD
             if (balance < 833333333325) {
-                let USD = tinyBarsToDollarsUnit(balance).toFixed(4)
+                let USD = tinyBarsToDollarsUnit(balance).toNumber()
+                let USDFormatted = USD.toLocaleString('en', {
+                    maximumFractionDigits: 4
+                })
                 log('less than 999.9999 USD, USD is', USD)
                 return {
                     tinyBars: balance,
                     hBars: tinyBarsToHBarsCurr(balance, 8),
-                    USD: `$${USD}`
+                    USD: `$${USDFormatted}`
                 }
             }
             // less than 99 999.9999 USD
             if (balance < 83333333333325) {
-                let USD = tinyBarsToDollarsUnit(balance).toFixed(3)
+                let USD = tinyBarsToDollarsUnit(balance).toNumber()
+                let USDFormatted = USD.toLocaleString('en', {
+                    maximumFractionDigits: 3
+                })
                 log('less than 99 999.9999 USD, USD is', USD)
                 return {
                     tinyBars: balance,
                     hBars: tinyBarsToHBarsCurr(balance, 8),
-                    USD: `$${USD}`
+                    USD: `$${USDFormatted}`
                 }
             }
-
-            let USD = tinyBarsToDollarsUnit(balance).toFixed(2)
             log('more than 99 999.9999USD', USD)
+            let USD = tinyBarsToDollarsUnit(balance).toNumber()
+            let USDFormatted = USD.toLocaleString('en', {
+                maximumFractionDigits: 2
+            })
             return {
                 tinyBars: balance,
                 hBars: tinyBarsToHBarsCurr(balance, 8),
-                USD: `$${USD}`
+                USD: `$${USDFormatted}`
             }
             // return {
             //     tinyBars: balance,
