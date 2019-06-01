@@ -178,7 +178,7 @@ function getTimestamp() {
     let seconds = parseInt(splitSeconds[0])
     let nanosecond = parseInt(splitSeconds[1])
 
-    ts.setSeconds(seconds - 5)
+    ts.setSeconds(seconds - 10)
     ts.setNanos(nanosecond)
     return ts
 }

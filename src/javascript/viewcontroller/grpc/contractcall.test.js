@@ -1,4 +1,5 @@
 import Hedera from '../../hedera'
+import HederaTag from '../../hedera-tags'
 import addressbook from '../../hedera/address-book'
 import { TransactionBody } from '../../../pbweb/TransactionBody_pb'
 import io from 'socket.io-client'
@@ -105,7 +106,7 @@ test('contractcall test', async done => {
     )
     let dom = await JSDOM.fromFile(testFile)
     let document = dom.window.document
-    let result = Hedera.contract(document)
+    let result = HederaTag.contract(document)
     log(result.abi.inputs)
     log(result.params)
 

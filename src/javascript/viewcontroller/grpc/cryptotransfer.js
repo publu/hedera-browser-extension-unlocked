@@ -135,7 +135,7 @@ async function cryptoTransferController(micropayment, port, urlString) {
             // alertBanner
             log('What is the error?', e.message)
             await alertBanner(
-                `Your micropayment has failed; <a href="${
+                `Your micropayment has failed: ${e.message}; <a href="${
                     window.location.href
                 }">please try again</a>. For help, visit <a href="https://help.hedera.com" target="_blank">help.hedera.com</a>.`,
                 false

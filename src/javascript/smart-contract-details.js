@@ -46,15 +46,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (contractTag !== undefined) {
         let params = contractTag.params
         let contractid = contractTag.contractid
-        let amountInUsdObj
-        let amountInHbar
+        let transactionCostInUsdObj
+        let transactionCostInHbar
         if (transactionCostEl !== undefined) {
-            amountInUsdObj = tinyBarsToDollarsUnit(200000)
-            amountInHbar = tinyBarsToHBarsUnit(200000)
+            transactionCostInUsdObj = tinyBarsToDollarsUnit(200000)
+            transactionCostInHbar = tinyBarsToHBarsUnit(200000)
             transactionCostEl.value =
-                `$ ${amountInUsdObj.toNumber()}` +
+                `$ ${transactionCostInUsdObj.toNumber()}` +
                 ' / ' +
-                `${amountInHbar.toPrecision(8)} ℏ`
+                `${transactionCostInHbar.toPrecision(8)} ℏ`
         }
         let x = params[2]
         let y = params[3]
@@ -63,17 +63,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             propertyLocationEl.value = propertyLocation
         }
 
-        let starPrice = params[1]
+        let purchasedPrice = params[1]
         let purchasedPriceInUsdObj
         let purchasedPriceInHbar
-        if (starPrice !== undefined) {
+        if (purchasedPrice !== undefined) {
             purchasedPriceInUsdObj = tinyBarsToDollarsUnit(
-                parseInt(starPrice) + 200000
+                parseInt(purchasedPrice)
             )
-            let purchasedPriceInUsd = `$${purchasedPriceInUsdObj.toNumber()}`
-            purchasedPriceInHbar = tinyBarsToHBarsUnit(
-                parseInt(starPrice) + 200000
-            )
+            let purchasedPriceInUsd = purchasedPriceInUsdObj.toNumber()
+            purchasedPriceInHbar = tinyBarsToHBarsUnit(parseInt(purchasedPrice))
             purchasedPriceEl.value =
                 `$ ${purchasedPriceInUsd}` +
                 ' / ' +
@@ -82,10 +80,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         contractIDEl.value = contractid
         let totalCostHbars =
-            purchasedPriceInHbar.toNumber() + amountInHbar.toNumber()
+            purchasedPriceInHbar.toNumber() + transactionCostInHbar.toNumber()
+        let totalCostUsd =
+            transactionCostInUsdObj.toNumber() +
+            purchasedPriceInUsdObj.toNumber()
         totalCostEl.value =
-            `$ ${amountInUsdObj.toNumber() +
-                purchasedPriceInUsdObj.toNumber()}` +
+            `$ ${totalCostUsd.toFixed(10)}` +
             ' / ' +
             `${totalCostHbars.toFixed(8)} ℏ`
 
