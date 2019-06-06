@@ -27,7 +27,7 @@ const onActivatedListener = async () => {
 
     await manageHostRule(url)
 
-    chrome.tabs.sendMessage(currTab.id, msg, async function (response) {
+    chrome.tabs.sendMessage(currTab.id, msg, async function(response) {
         // no hedera-tag catch chrome runtime error
         if (manageRuntimeError(response)) return
 
@@ -35,7 +35,7 @@ const onActivatedListener = async () => {
 
         await manageHostRule(url)
 
-        await manageState(currTab, url, response)
+        // await manageState(currTab, url, response)
     })
 }
 
