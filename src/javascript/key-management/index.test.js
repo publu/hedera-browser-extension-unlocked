@@ -1,4 +1,4 @@
-import { toByteArray } from '.'
+import { toByteArray, dataViewsAreEqual } from '.'
 
 import forge from 'node-forge'
 import debug from 'debug'
@@ -27,6 +27,18 @@ test('sha384 in JavaScript', () => {
     md3.update(message2)
     let md3Hex = md3.digest().toHex()
     expect(md3Hex).not.toBe(mdHex)
+})
+
+test('data views are equal', () => {
+    let a = [22, 33, 44, 55, 66]
+    let b = [22, 33, 44, 55, 66]
+    let c = [33, 44, 55, 66]
+
+    let equal = dataViewsAreEqual(a, b)
+    expect(equal).toBeTruthy()
+
+    let notequal = dataViewsAreEqual(b, c)
+    expect(notequal).toBeFalsy()
 })
 
 // test('deciphering', () => {

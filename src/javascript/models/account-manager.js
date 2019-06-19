@@ -13,7 +13,7 @@ const errMsgCurrentNetwork =
     'A current network is required. Use init() to initalise AccountManager.'
 
 /**
- * 
+ *
  * AccountManager class allows user to manage multiple accounts by setting the current account that is in-use for a particular Hedera network, ie testnet or mainnet.
  * @example
  * let am = await new AccountManager().init()
@@ -38,10 +38,10 @@ class AccountManager extends AbstractLocalStorage {
     }
 
     /**
-     * 
+     *
      * setCurrentAccount
-     * @param {string|Object} 
-     * acc is either 
+     * @param {string|Object}
+     * acc is either
      * accountID, a string, denoted as "0.0.1000" (shardNum.realmNum.accountNum); or
      * accountDetails, containing accountID, privateKey, publicKey, accountIndex, accountLabel
      * @example
@@ -52,6 +52,7 @@ class AccountManager extends AbstractLocalStorage {
     async setCurrentAccount(acc) {
         this._throw(this.currentNetwork, errMsgCurrentNetwork)
         let a = await new Account().init(acc)
+        if (a === undefined) return undefined
         await this.addToExistingAccounts(a.accountID)
         await this.setItem({
             [this.keyNameCurrent]: a.accountID
@@ -59,7 +60,7 @@ class AccountManager extends AbstractLocalStorage {
     }
 
     /**
-     * 
+     *
      * getCurrentAccount returns the current account of user
      */
     async getCurrentAccount() {
@@ -69,7 +70,7 @@ class AccountManager extends AbstractLocalStorage {
     }
 
     /**
-     * 
+     *
      * removeCurrentAccount removes current account
      */
     async removeCurrentAccount() {
@@ -78,7 +79,7 @@ class AccountManager extends AbstractLocalStorage {
     }
 
     /**
-     * 
+     *
      * setCurrentAccountBalance sets the current account balance in tinyBars
      * @param {number} balance is a number in terms of tinyBars
      */
@@ -90,8 +91,8 @@ class AccountManager extends AbstractLocalStorage {
     }
 
     /**
-     * 
-     * getCurrentAccountObject returns the account object of the accountID that requested for it. 
+     *
+     * getCurrentAccountObject returns the account object of the accountID that requested for it.
      * The Account object contains account details. @see Account
      */
     async getCurrentAccountObject() {
@@ -103,9 +104,9 @@ class AccountManager extends AbstractLocalStorage {
     }
 
     /**
-     * 
+     *
      * addToExistingAccounts saves account into Local Storage with existingAccounts.
-     * @param {*} accountID 
+     * @param {*} accountID
      */
     async addToExistingAccounts(accountID) {
         this._throw(this.currentNetwork, errMsgCurrentNetwork)
@@ -118,7 +119,7 @@ class AccountManager extends AbstractLocalStorage {
     }
 
     /**
-     * 
+     *
      * getExistingAccounts returns the existing accounts delimited by comma as a Set object.
      */
     async getExistingAccounts() {

@@ -116,9 +116,11 @@ async function getAccountDetailsFromMobile(pinInput) {
     log('pinInput is', pinInput)
 
     let address = await mobileNetwork(pinInput)
+    console.log('fake', address, pinInput)
     try {
         log('Making GET call to', address)
         let response = await httpRequest('GET', address)
+        console.log('fake response', response)
         log('RESPONSE', response)
         let jsonData = JSON.parse(response)
         return jsonData

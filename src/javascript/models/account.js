@@ -2,6 +2,7 @@ import { tinyBarsToDollarsUnit, tinyBarsToHBarsCurr } from '../hedera/currency'
 import AbstractLocalStorage from './abstract-local-storage'
 import NetworkManager from './network-manager'
 import debug from 'debug'
+import { isNullOrUndefined } from 'util'
 
 const log = debug('all:models')
 
@@ -293,6 +294,7 @@ class Account extends AbstractLocalStorage {
      * accountDetails, containing accountID, privateKey, publicKey, accountIndex, accountLabel.
      */
     _validate(acc) {
+        if (isNullOrUndefined(acc)) return false
         if (typeof acc === 'string') {
             return this._validateAccountIDStr(acc)
         }

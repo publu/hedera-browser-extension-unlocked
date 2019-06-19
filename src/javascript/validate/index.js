@@ -70,11 +70,13 @@ async function listOfIPs(ips) {
             })
         }
     }
-    log(ipv4results[0].ipaddress)
+    log(ipv4results[0])
     log(ipv6results.length)
+
     if (
         (ipv4results.length === 0 && ipv6results.length > 0) ||
-        ipv4results.length === 0
+        ipv4results.length === 0 ||
+        ipv4results[0] === undefined
     ) {
         log('We currently only support IPv4')
         return false

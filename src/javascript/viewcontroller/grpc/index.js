@@ -1,6 +1,6 @@
 import errorHandler from './errorhandler'
 
-import cryptoTransferController from './cryptotransfer'
+import { cryptoTransferController, cryptoTransferTx } from './cryptotransfer'
 import fileGetContentsController from './filegetcontents'
 import getAccountBalanceController from './getaccountbalance'
 // not properly abstracted yet
@@ -9,6 +9,7 @@ import getAccountBalanceController from './getaccountbalance'
 export {
     errorHandler,
     cryptoTransferController,
+    cryptoTransferTx,
     fileGetContentsController,
     getAccountBalanceController
 }

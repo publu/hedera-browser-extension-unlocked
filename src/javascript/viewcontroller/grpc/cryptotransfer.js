@@ -45,60 +45,14 @@ let count = 0
  * @param {string} urlString allows to keep track of the content that was read in indexed-db
  */
 async function cryptoTransferController(micropayment, port, urlString) {
-    log('Is our port object present?', port)
-    // current account
-    let am = await new AccountManager().init()
-    let a = await am.getCurrentAccountObject()
-    log('current account, a', a)
-    // sender details
-    let sender = a.accountID
-    let keypair = a.keypair
-    // recipient details
-    let recipientList = micropayment.recipientList
-    let amount = i.getSumOfTransfer(recipientList)
-    // validate memo < 100 bytes
-    let memo = i.validMemoBytes(micropayment.memo)
-
-    let mps = micropayment.paymentServer
-    let fee = TRANSACTION_FEE
-    log('submissionNode parsed in is: ', micropayment.submissionNode)
-    log(
-        'submissionNode parsed in is recipientList: ',
-        micropayment.recipientList
-    )
-    log(
-        'submissionNodeparsed in is paymentserver: ',
-        micropayment.paymentServer
-    )
-    let submissionNode = micropayment.submissionNode
-    // prepare (and sign) the tx object to be forwarded to micropayment-server
-    let node = address.getNodeAddr(submissionNode)
-    log('node : ', node)
-    const hedera = new Hedera.Client(node.address, node.account)
-    let client = hedera.withOperator(keypair, sender).connect()
-    let tx = client.cryptoTransfer(sender, recipientList, memo, fee).prepare()
-    let transactionId = tx.idString
-
-    // data for indexedDB: accountID, host, path etc
-    let accountID = a.accountID
-    let url, host, path
-    try {
-        url = new URL(urlString)
-        host = url.origin
-        path = url.pathname
-    } catch (e) {
-        return
-    }
-
-    let data = {
-        accountID,
-        host,
-        path,
-        amount,
-        transactionId
-    }
-
     // connect to micropayment-server and pass the request, and get a response
+
+    let parsedData = await cryptoTransferTx(micropayment, port, urlString)
+    let data = parsedData.data
+    let tx = parsedData.tx
+    let client = parsedData.client
+    let mps = micropayment.paymentServer
+
     const socket = io(mps, {
         autoConnect: false
     })
@@ -122,7 +76,6 @@ async function cryptoTransferController(micropayment, port, urlString) {
 
     socket.on(`${CRYPTOTRANSFER}_RESPONSE`, async function(res) {
         // unexpected or undefined response, handle any error here, likely due to network errors
-        log(`${CRYPTOTRANSFER}_RESPONSE`, res)
         try {
             errorHandler(res)
             // cryptoTransfer succeeded, save into indexed-db
@@ -156,28 +109,66 @@ async function cryptoTransferController(micropayment, port, urlString) {
         socket.disconnect()
     })
 
-    // // socket.io builtin event
-    // socket.on('error', function (e) {
-    //     log('Socket connection error: ', e)
-    // })
-
-    socket.on('PAYMENTSERVERERROR', function(text) {
-        log('Payment server connection error: ', text)
-    })
-
-    // socket.on('error', function () {
-    //     //Socket IO won't reconnect to a host that it has already tried, unless option specified
-    //     socket = io.connect(host, {
-    //         'force new connection': true
-    //     });
-    // });
-
     // socket.io builtin event
     socket.on('disconnect', function() {
         log('Socket disconnected')
     })
 
     socket.open()
+}
+
+async function cryptoTransferTx(micropayment, port, urlString) {
+    log('Is our port object present?', port)
+    // current account
+    let am = await new AccountManager().init()
+    let a = await am.getCurrentAccountObject()
+    log('current account, a', a)
+    // sender details
+    let sender = a.accountID
+    let keypair = a.keypair
+    // recipient details
+    let recipientList = micropayment.recipientList
+    let amount = i.getSumOfTransfer(recipientList)
+    // validate memo < 100 bytes
+    let memo = i.validMemoBytes(micropayment.memo)
+    let fee = TRANSACTION_FEE
+    log('submissionNode parsed in is: ', micropayment.submissionNode)
+    log(
+        'submissionNode parsed in is recipientList: ',
+        micropayment.recipientList
+    )
+    log(
+        'submissionNodeparsed in is paymentserver: ',
+        micropayment.paymentServer
+    )
+    let submissionNode = micropayment.submissionNode
+    // prepare (and sign) the tx object to be forwarded to micropayment-server
+    let node = address.getNodeAddr(submissionNode)
+    log('node : ', node)
+    const hedera = new Hedera.Client(node.address, node.account)
+    let client = hedera.withOperator(keypair, sender).connect()
+    let tx = client.cryptoTransfer(sender, recipientList, memo, fee).prepare()
+    let transactionId = tx.idString
+
+    // data for indexedDB: accountID, host, path etc
+    let accountID = a.accountID
+    let url, host, path
+    try {
+        url = new URL(urlString)
+        host = url.origin
+        path = url.pathname
+    } catch (e) {
+        return
+    }
+    let data = {
+        accountID,
+        host,
+        path,
+        amount,
+        transactionId
+    }
+
+    return { data, tx, client }
 }
 
 /**
@@ -213,4 +204,4 @@ function indexedDBSave(data, port) {
     }
 }
 
-export default cryptoTransferController
+export { cryptoTransferController, cryptoTransferTx }
