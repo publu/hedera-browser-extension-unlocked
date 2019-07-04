@@ -1,6 +1,6 @@
 {
     "name": "hedera-browser-extension",
-    "version": "0.9.33",
+    "version": "0.9.34",
     "description": "Hedera browser extension to manage micropayments",
     "dependencies": {
         "debug": "^4.1.1",
@@ -15,6 +15,7 @@
         "nano-seconds": "^1.2.2",
         "node-forge": "^0.8.2",
         "qrcode-generator": "^1.4.3",
+        "socket.io": "^2.2.0",
         "socket.io-client": "^2.2.0",
         "web3-eth-abi": "^1.0.0-beta.52"
     },
@@ -40,6 +41,7 @@
         "jsdom": "^14.1.0",
         "prettier-eslint": "^8.8.2",
         "prettier-eslint-cli": "^4.7.1",
+        "sinon-chrome": "^3.0.1",
         "style-loader": "^0.23.1",
         "stylelint": "^10.0.1",
         "stylelint-config-standard": "^18.3.0",

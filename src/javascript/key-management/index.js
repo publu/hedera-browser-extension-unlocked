@@ -105,4 +105,4 @@ function toByteArray(hexString) {
     return result
 }
 
-export { decryptAccountDetails, toByteArray }
+export { decryptAccountDetails, toByteArray, dataViewsAreEqual }

@@ -30,7 +30,7 @@ const onUpdatedListener = async (tabID, info) => {
 
         await manageHostRule(url)
 
-        chrome.tabs.sendMessage(currTab.id, msg, async function (response) {
+        chrome.tabs.sendMessage(currTab.id, msg, async function(response) {
             log('receive response', response)
             // catch chrome runtime error
             if (manageRuntimeError(response)) return

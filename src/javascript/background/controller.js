@@ -182,5 +182,8 @@ export {
     manageRuntimeError,
     manageTabError,
     manageHostRule,
-    manageUserCookies
+    manageUserCookies,
+    manageSmartContract,
+    manageStateSmartContract,
+    manageStateMicropayment
 }

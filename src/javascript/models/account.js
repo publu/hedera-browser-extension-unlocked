@@ -2,6 +2,7 @@ import { tinyBarsToDollarsUnit, tinyBarsToHBarsCurr } from '../hedera/currency'
 import AbstractLocalStorage from './abstract-local-storage'
 import NetworkManager from './network-manager'
 import debug from 'debug'
+import { isNullOrUndefined } from 'util'
 
 const log = debug('all:models')
 
@@ -169,6 +170,31 @@ class Account extends AbstractLocalStorage {
             }
             // less than 999.9999 USD
             if (balance < 833333333325) {
+                let USD = tinyBarsToDollarsUnit(balance).toNumber()
+                let USDFormatted = USD.toLocaleString('en', {
+                    maximumFractionDigits: 4
+                })
+                log('less than 999.9999 USD, USD is', USD)
+                return {
+                    tinyBars: balance,
+                    hBars: tinyBarsToHBarsCurr(balance, 8),
+                    USD: `$${USDFormatted}`
+                }
+            }
+            // less than 99 999.9999 USD
+            if (balance < 83333333333325) {
+                let USD = tinyBarsToDollarsUnit(balance).toNumber()
+                let USDFormatted = USD.toLocaleString('en', {
+                    maximumFractionDigits: 3
+                })
+                log('less than 99 999.9999 USD, USD is', USD)
+                return {
+                    tinyBars: balance,
+                    hBars: tinyBarsToHBarsCurr(balance, 8),
+                    USD: `$${USDFormatted}`
+                }
+            // less than 999.9999 USD
+            if (balance < 833333333325) {
                 let USD = tinyBarsToDollarsUnit(balance).toFixed(4)
                 log('less than 999.9999 USD, USD is', USD)
                 return {
@@ -188,12 +214,28 @@ class Account extends AbstractLocalStorage {
                 }
             }
 
-            let USD = tinyBarsToDollarsUnit(balance).toFixed(2)
+            USD = tinyBarsToDollarsUnit(balance).toFixed(2)
             log('more than 99 999.9999USD', USD)
             return {
                 tinyBars: balance,
                 hBars: tinyBarsToHBarsCurr(balance, 8),
                 USD: `$${USD}`
+            }
+            // return {
+            //     tinyBars: balance,
+            //     hBars: tinyBarsToHBarsCurr(balance, 8),
+            //     USD: tinyBarsToDollarsUnit(balance)
+            // }
+            }
+            log('more than 99 999.9999USD', USD)
+            let USD = tinyBarsToDollarsUnit(balance).toNumber()
+            let USDFormatted = USD.toLocaleString('en', {
+                maximumFractionDigits: 2
+            })
+            return {
+                tinyBars: balance,
+                hBars: tinyBarsToHBarsCurr(balance, 8),
+                USD: `$${USDFormatted}`
             }
             // return {
             //     tinyBars: balance,
@@ -285,6 +327,7 @@ class Account extends AbstractLocalStorage {
      * accountDetails, containing accountID, privateKey, publicKey, accountIndex, accountLabel.
      */
     _validate(acc) {
+        if (isNullOrUndefined(acc)) return false
         if (typeof acc === 'string') {
             return this._validateAccountIDStr(acc)
         }

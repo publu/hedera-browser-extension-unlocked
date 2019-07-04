@@ -8,6 +8,15 @@ beforeEach(() => {
     ips = testips['ips']
 })
 
+test('list of ips', async () => {
+    let list = validate.listOfIPs(ips)
+    expect(list).toBeTruthy()
+
+    let iplistnone = []
+    let noiplist = await validate.listOfIPs(iplistnone)
+    expect(noiplist).toBeFalsy()
+})
+
 test('Basic IPv4 versus IPv6 tests', () => {
     expect(validate.IPv4(ips[0])).toBeFalsy()
     expect(validate.IPv6(ips[0])).toBeTruthy()

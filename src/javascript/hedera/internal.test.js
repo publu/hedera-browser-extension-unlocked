@@ -18,7 +18,7 @@ const log = debug('test:internal')
 // const ed25519 = forge.pki.ed25519
 
 test('timestamp nanos', () => {
-    let secondsT = Math.round((new Date().getTime() - 5000) / 1000)
+    let secondsT = Math.round((new Date().getTime() - 10000) / 1000)
 
     const ns = nano.now()
 

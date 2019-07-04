@@ -23,7 +23,7 @@ function setRecipientTransferLists(sender, recipientList) {
     let transferList = new TransferList()
     let finalList = []
     let totalDeducted = 0
-    log('blah', recipientList)
+    log('recipientList', recipientList)
 
     for (var k in recipientList) {
         // user[k] = recipientList[k];
