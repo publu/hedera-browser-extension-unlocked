@@ -17,7 +17,7 @@
     "qrcode-generator": "^1.4.3",
     "socket.io-client": "^2.2.0",
     "web3-eth-abi": "^1.0.0-beta.52",
-    "snyk": "^1.190.0"
+    "snyk": "^1.192.4"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
