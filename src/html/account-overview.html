@@ -31,9 +31,10 @@
                     />
                 </div>
 
-                <p class="col-10 pt-2 mt-1 pl-3 title text-left">
-                    account overview
-                </p>
+                <p
+                    class="col-10 pt-2 mt-1 pl-3 title text-left"
+                    id="accountOverviewText"
+                ></p>
             </div>
             <!-- content -->
             <div class="row content fixed">
@@ -48,16 +49,16 @@
                             <p class="extra">
                                 <span id="currentBalanceHBars"></span>
                             </p>
-                            <p class="balance">Current Balance</p>
+                            <p class="balance" id="balanceText"></p>
                         </div>
                     </div>
                     <!-- row ends -->
                     <!-- row starts -->
                     <div class="row threshold" id="local-threshold">
-                        <div class="col-6 hedera-info">
-                            For this domain, automatically pay any request up
-                            to:
-                        </div>
+                        <div
+                            class="col-6 hedera-info"
+                            id="domainThresholdText"
+                        ></div>
                         <div class="col-6">
                             <div class="pill-amount">
                                 <div>

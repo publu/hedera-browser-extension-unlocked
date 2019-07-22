@@ -5,6 +5,11 @@ import debug from 'debug'
 const log = debug('all:recent-transactions')
 
 document.addEventListener('DOMContentLoaded', async function() {
+    let getI18n = chrome.i18n.getMessage
+    document.getElementById('recentTransactionsText').innerHTML = getI18n(
+        'recent_transactions_text'
+    )
+
     // current account
     let am = await new AccountManager().init()
     let a = await am.getCurrentAccountObject()

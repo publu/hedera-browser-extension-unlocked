@@ -8,6 +8,18 @@ import setDevEnvironment from './environment'
 import io from 'socket.io-client'
 
 document.addEventListener('DOMContentLoaded', async function() {
+    let getI18nMsg = chrome.i18n.getMessage
+
+    document.getElementById('domainThresholdText').innerHTML = getI18nMsg(
+        'domain_threshold_text'
+    )
+    document.getElementById('balanceText').innerHTML = getI18nMsg(
+        'balance_text'
+    )
+    document.getElementById('accountOverviewText').innerHTML = getI18nMsg(
+        'account_overview_text'
+    )
+
     const log = await setDevEnvironment('all:account-overview', true)
     log(ADDRESS_BOOK)
 
