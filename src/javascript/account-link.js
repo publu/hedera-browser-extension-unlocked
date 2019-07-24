@@ -10,23 +10,45 @@ import debug from 'debug'
 const log = debug('all:account-link')
 
 document.addEventListener('DOMContentLoaded', async function() {
+    let getI18nMsg = chrome.i18n.getMessage
+    document.getElementById('pairingInstruction').innerHTML = getI18nMsg(
+        'pairing_instruction'
+    )
+    document.getElementById('pairingLink').innerHTML = getI18nMsg(
+        'pairing_link'
+    )
+    document.getElementById('pairingNetwork').innerHTML = getI18nMsg(
+        'pairing_network'
+    )
+    document.getElementById('formLabel').innerHTML = getI18nMsg(
+        'activation_code'
+    )
+    let buttonText = document.getElementById('buttonCompletePairingText')
+    buttonText.innerHTML = getI18nMsg('complete_pairing')
+
     getLocalIPs(async function(ips) {
         log('Local IP addresses:\n ' + ips.join('\n '))
         // validated ip address
         let result = await validate.listOfIPs(ips)
         if (result === false) {
             let alertObj = {
-                alertString: 'We currently only support IPv4'
+                alertString: getI18nMsg('curr_support_ipv4')
             }
             await alertNotification(alertObj)
         }
     })
 
+    document.getElementById('pairingLink').onclick = function() {
+        chrome.tabs.create({
+            url:
+                'https://help.hedera.com/hc/en-us/articles/360000664818-How-do-I-connect-my-Hedera-wallet-to-the-HBAR-micropayments-Chrome-extension'
+        })
+    }
+
     document.forms['pinForm'].onsubmit = async function(event) {
         event.preventDefault()
         let pinInput = document.forms['pinForm']['pinInput'].value
         let button = document.getElementById('getAccountBalanceButton')
-
         // validate pin
         try {
             buttonState(button, 'loading')
@@ -57,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         } catch (e) {
             log('mobile-to-extension account transfer error', e)
             if (e instanceof SyntaxError) {
-                e.message = 'Your activation code has expired'
+                e.message = getI18nMsg('expired_activation_code')
             }
             let alertObj = {
                 alertString: e.message,

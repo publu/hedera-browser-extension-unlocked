@@ -5,6 +5,14 @@ import debug from 'debug'
 const log = debug('all:smart-contract')
 
 document.addEventListener('DOMContentLoaded', async () => {
+    let getI18n = chrome.i18n.getMessage
+    document.getElementById('smartContractText').innerHTML = getI18n(
+        'smart_contract_text'
+    )
+    document.getElementById('smartContractComingSoon').innerHTML = getI18n(
+        'smart_contract_coming_soon'
+    )
+
     // which URL is the user on
     const q = { active: true, currentWindow: true }
     let tabs = await tabsQuery(q)

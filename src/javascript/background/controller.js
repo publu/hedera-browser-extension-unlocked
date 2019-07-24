@@ -52,18 +52,11 @@ const manageStateSmartContract = async (url, response) => {
             log('contract scenario with hedera-contract object', response)
 
             // Community Testing V2 feature flag
-            // hedera-contract will only be handled for hash-hash.info
             if (featureFlags.communityTestingV2) {
                 let handleSmartContract
                 if (ENV_NAME === 'development') {
                     handleSmartContract =
-                        url.origin === 'https://hash-hash.info' ||
-                        url.origin === 'https://localhost:8443' ||
-                        url.origin === 'https://staging.hash-hash.info'
-                } else {
-                    handleSmartContract =
-                        url.origin === 'https://hash-hash.info' ||
-                        url.origin === 'https://staging.hash-hash.info'
+                        url.origin === 'https://localhost:8443'
                 }
 
                 if (handleSmartContract) {

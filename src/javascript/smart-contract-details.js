@@ -12,6 +12,34 @@ import debug from 'debug'
 const log = debug('all:smart-contract-details')
 
 document.addEventListener('DOMContentLoaded', async () => {
+    let getI18n = chrome.i18n.getMessage
+    document.getElementById('smartContractText').innerHTML = getI18n(
+        'smart_contract_text'
+    )
+    document.getElementById('contractIDText').innerHTML = getI18n(
+        'contract_id_text'
+    )
+    document.getElementById('transactionCostText').innerHTML = getI18n(
+        'transaction_cost_text'
+    )
+    document.getElementById('propertyLocationText').innerHTML = getI18n(
+        'property_location_text'
+    )
+    document.getElementById('starCostText').innerHTML = getI18n(
+        'star_cost_text'
+    )
+    document.getElementById('totalCostText').innerHTML = getI18n(
+        'total_cost_text'
+    )
+    document.getElementById('smartContractTNC').innerHTML = getI18n(
+        'smart_contract_tnc'
+    )
+    document.getElementById('acceptButtonText').innerHTML = getI18n(
+        'accept_button_text'
+    )
+    document.getElementById('denyButtonText').innerHTML = getI18n(
+        'deny_button_text'
+    )
     // which URL is the user on
     const q = { active: true, currentWindow: true }
     let tabs = await tabsQuery(q)
