@@ -39,8 +39,8 @@ if (typeof global._sessionStorage !== 'undefined') {
 // mock global ADDRESS_BOOK when running tests
 global.ADDRESS_BOOK = addressBook['test']['ADDRESS_BOOK']
 
-global.TRANSACTION_FEE = 100000
-global.BALANCE_QUERY_FEE = 100000
+global.TRANSACTION_FEE = 200000
+global.BALANCE_QUERY_FEE = 200000
 
 // mock indexed db on Dexie
 Dexie.dependencies.indexedDB = mockIndexedDB

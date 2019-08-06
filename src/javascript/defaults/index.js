@@ -6,9 +6,9 @@
 const defaults = {
     DEFAULT_EXCHANGE: 0.12,
     DEFAULT_LIMIT: 4166667,
-    BALANCE_QUERY_FEE: 100000,
-    TRANSACTION_FEE: 100000,
-    GAS: 100000
+    BALANCE_QUERY_FEE: 200000,
+    TRANSACTION_FEE: 200000,
+    GAS: 200000
 }
 
 const productionPaymentServer = {
