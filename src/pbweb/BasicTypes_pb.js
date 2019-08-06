@@ -5290,7 +5290,10 @@ proto.proto.HederaFunctionality = {
   FILEGETINFO: 24,
   TRANSACTIONGETRECORD: 25,
   CONTRACTGETRECORDS: 26,
-  CRYPTOCREATE: 27
+  CRYPTOCREATE: 27,
+  SYSTEMDELETE: 28,
+  SYSTEMUNDELETE: 29,
+  CONTRACTDELETE: 30
 };
 
 goog.object.extend(exports, proto.proto);

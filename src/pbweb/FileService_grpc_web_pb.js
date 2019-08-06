@@ -430,7 +430,7 @@ proto.proto.FileServicePromiseClient.prototype.getFileInfo =
  *   !proto.proto.Transaction,
  *   !proto.proto.TransactionResponse>}
  */
-const methodInfo_FileService_adminDelete = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_FileService_systemDelete = new grpc.web.AbstractClientBase.MethodInfo(
   TransactionResponse_pb.TransactionResponse,
   /** @param {!proto.proto.Transaction} request */
   function(request) {
@@ -450,13 +450,13 @@ const methodInfo_FileService_adminDelete = new grpc.web.AbstractClientBase.Metho
  * @return {!grpc.web.ClientReadableStream<!proto.proto.TransactionResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.proto.FileServiceClient.prototype.adminDelete =
+proto.proto.FileServiceClient.prototype.systemDelete =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/proto.FileService/adminDelete',
+      '/proto.FileService/systemDelete',
       request,
       metadata || {},
-      methodInfo_FileService_adminDelete,
+      methodInfo_FileService_systemDelete,
       callback);
 };
 
@@ -469,13 +469,13 @@ proto.proto.FileServiceClient.prototype.adminDelete =
  * @return {!Promise<!proto.proto.TransactionResponse>}
  *     A native promise that resolves to the response
  */
-proto.proto.FileServicePromiseClient.prototype.adminDelete =
+proto.proto.FileServicePromiseClient.prototype.systemDelete =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/proto.FileService/adminDelete',
+      '/proto.FileService/systemDelete',
       request,
       metadata || {},
-      methodInfo_FileService_adminDelete);
+      methodInfo_FileService_systemDelete);
 };
 
 
@@ -485,7 +485,7 @@ proto.proto.FileServicePromiseClient.prototype.adminDelete =
  *   !proto.proto.Transaction,
  *   !proto.proto.TransactionResponse>}
  */
-const methodInfo_FileService_adminUndelete = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_FileService_systemUndelete = new grpc.web.AbstractClientBase.MethodInfo(
   TransactionResponse_pb.TransactionResponse,
   /** @param {!proto.proto.Transaction} request */
   function(request) {
@@ -505,13 +505,13 @@ const methodInfo_FileService_adminUndelete = new grpc.web.AbstractClientBase.Met
  * @return {!grpc.web.ClientReadableStream<!proto.proto.TransactionResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.proto.FileServiceClient.prototype.adminUndelete =
+proto.proto.FileServiceClient.prototype.systemUndelete =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/proto.FileService/adminUndelete',
+      '/proto.FileService/systemUndelete',
       request,
       metadata || {},
-      methodInfo_FileService_adminUndelete,
+      methodInfo_FileService_systemUndelete,
       callback);
 };
 
@@ -524,13 +524,13 @@ proto.proto.FileServiceClient.prototype.adminUndelete =
  * @return {!Promise<!proto.proto.TransactionResponse>}
  *     A native promise that resolves to the response
  */
-proto.proto.FileServicePromiseClient.prototype.adminUndelete =
+proto.proto.FileServicePromiseClient.prototype.systemUndelete =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/proto.FileService/adminUndelete',
+      '/proto.FileService/systemUndelete',
       request,
       metadata || {},
-      methodInfo_FileService_adminUndelete);
+      methodInfo_FileService_systemUndelete);
 };
 
 

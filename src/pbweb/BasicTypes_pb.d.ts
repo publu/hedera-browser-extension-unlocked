@@ -690,4 +690,7 @@ export enum HederaFunctionality {
   TransactionGetRecord = 25,
   ContractGetRecords = 26,
   CryptoCreate = 27,
+  SystemDelete = 28,
+  SystemUndelete = 29,
+  ContractDelete = 30,
 }

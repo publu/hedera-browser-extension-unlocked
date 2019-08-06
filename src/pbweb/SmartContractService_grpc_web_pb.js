@@ -534,5 +534,60 @@ proto.proto.SmartContractServicePromiseClient.prototype.getTxRecordByContractID 
 };
 
 
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.proto.Transaction,
+ *   !proto.proto.TransactionResponse>}
+ */
+const methodInfo_SmartContractService_deleteContract = new grpc.web.AbstractClientBase.MethodInfo(
+  TransactionResponse_pb.TransactionResponse,
+  /** @param {!proto.proto.Transaction} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  TransactionResponse_pb.TransactionResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.proto.Transaction} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.proto.TransactionResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.proto.TransactionResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.proto.SmartContractServiceClient.prototype.deleteContract =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/proto.SmartContractService/deleteContract',
+      request,
+      metadata || {},
+      methodInfo_SmartContractService_deleteContract,
+      callback);
+};
+
+
+/**
+ * @param {!proto.proto.Transaction} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.proto.TransactionResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.proto.SmartContractServicePromiseClient.prototype.deleteContract =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/proto.SmartContractService/deleteContract',
+      request,
+      metadata || {},
+      methodInfo_SmartContractService_deleteContract);
+};
+
+
 module.exports = proto.proto;
 

@@ -9,6 +9,8 @@ import getTransactionReceipts from './gettransactionreceipts'
 import fileGetContents from './filegetcontents'
 import contractCall from './contractcall'
 import cryptoGetInfo from './cryptogetinfo'
+import { Transaction } from '../../pbweb/Transaction_pb'
+import { TransactionBody } from '../../pbweb/TransactionBody_pb'
 
 /**
  * @module Hedera
@@ -145,6 +147,8 @@ class Hedera {
             fee,
             generateRecord
         )
+        console.log(tx.getBody() instanceof TransactionBody)
+        console.log(tx instanceof Transaction)
         this._data = tx
         this._id = tx.getBody().getTransactionid()
         return this

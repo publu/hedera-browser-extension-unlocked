@@ -66,6 +66,13 @@ export class SmartContractServiceClient {
                response: Response_pb.Response) => void
   ): grpcWeb.ClientReadableStream<Response_pb.Response>;
 
+  deleteContract(
+    request: Transaction_pb.Transaction,
+    metadata: grpcWeb.Metadata | undefined,
+    callback: (err: grpcWeb.Error,
+               response: TransactionResponse_pb.TransactionResponse) => void
+  ): grpcWeb.ClientReadableStream<TransactionResponse_pb.TransactionResponse>;
+
 }
 
 export class SmartContractServicePromiseClient {
@@ -112,6 +119,11 @@ export class SmartContractServicePromiseClient {
     request: Query_pb.Query,
     metadata?: grpcWeb.Metadata
   ): Promise<Response_pb.Response>;
+
+  deleteContract(
+    request: Transaction_pb.Transaction,
+    metadata?: grpcWeb.Metadata
+  ): Promise<TransactionResponse_pb.TransactionResponse>;
 
 }
 

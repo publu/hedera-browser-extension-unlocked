@@ -83,7 +83,7 @@ function cryptoTransfer(
     tx.setBody(txBody)
     // tx.setSigs(sigMain.getSignaturelist())
     tx.setSigs(sigList)
-    log('tx body bytes')
+    log('tx body bytes', tx instanceof Transaction)
     log(tx)
     log(forge.util.bytesToHex(tx.serializeBinary()))
     return tx

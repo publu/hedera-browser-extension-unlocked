@@ -92,7 +92,7 @@ proto.proto.Claim.toObject = function(includeInstance, msg) {
     accountid: (f = msg.getAccountid()) && BasicTypes_pb.AccountID.toObject(includeInstance, f),
     hash: msg.getHash_asB64(),
     keys: (f = msg.getKeys()) && BasicTypes_pb.KeyList.toObject(includeInstance, f),
-    claimexpiration: (f = msg.getClaimexpiration()) && Duration_pb.Duration.toObject(includeInstance, f)
+    claimduration: (f = msg.getClaimduration()) && Duration_pb.Duration.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -143,10 +143,10 @@ proto.proto.Claim.deserializeBinaryFromReader = function(msg, reader) {
       reader.readMessage(value,BasicTypes_pb.KeyList.deserializeBinaryFromReader);
       msg.setKeys(value);
       break;
-    case 4:
+    case 5:
       var value = new Duration_pb.Duration;
       reader.readMessage(value,Duration_pb.Duration.deserializeBinaryFromReader);
-      msg.setClaimexpiration(value);
+      msg.setClaimduration(value);
       break;
     default:
       reader.skipField();
@@ -200,10 +200,10 @@ proto.proto.Claim.serializeBinaryToWriter = function(message, writer) {
       BasicTypes_pb.KeyList.serializeBinaryToWriter
     );
   }
-  f = message.getClaimexpiration();
+  f = message.getClaimduration();
   if (f != null) {
     writer.writeMessage(
-      4,
+      5,
       f,
       Duration_pb.Duration.serializeBinaryToWriter
     );
@@ -317,26 +317,26 @@ proto.proto.Claim.prototype.hasKeys = function() {
 
 
 /**
- * optional Duration claimExpiration = 4;
+ * optional Duration claimDuration = 5;
  * @return {?proto.proto.Duration}
  */
-proto.proto.Claim.prototype.getClaimexpiration = function() {
+proto.proto.Claim.prototype.getClaimduration = function() {
   return /** @type{?proto.proto.Duration} */ (
-    jspb.Message.getWrapperField(this, Duration_pb.Duration, 4));
+    jspb.Message.getWrapperField(this, Duration_pb.Duration, 5));
 };
 
 
 /** @param {?proto.proto.Duration|undefined} value */
-proto.proto.Claim.prototype.setClaimexpiration = function(value) {
-  jspb.Message.setWrapperField(this, 4, value);
+proto.proto.Claim.prototype.setClaimduration = function(value) {
+  jspb.Message.setWrapperField(this, 5, value);
 };
 
 
 /**
  * Clears the message field making it undefined.
  */
-proto.proto.Claim.prototype.clearClaimexpiration = function() {
-  this.setClaimexpiration(undefined);
+proto.proto.Claim.prototype.clearClaimduration = function() {
+  this.setClaimduration(undefined);
 };
 
 
@@ -344,8 +344,8 @@ proto.proto.Claim.prototype.clearClaimexpiration = function() {
  * Returns whether this field is set.
  * @return {boolean}
  */
-proto.proto.Claim.prototype.hasClaimexpiration = function() {
-  return jspb.Message.getField(this, 4) != null;
+proto.proto.Claim.prototype.hasClaimduration = function() {
+  return jspb.Message.getField(this, 5) != null;
 };
 
 
@@ -416,7 +416,7 @@ proto.proto.CryptoAddClaimTransactionBody.deserializeBinaryFromReader = function
     }
     var field = reader.getFieldNumber();
     switch (field) {
-    case 1:
+    case 3:
       var value = new proto.proto.Claim;
       reader.readMessage(value,proto.proto.Claim.deserializeBinaryFromReader);
       msg.setClaim(value);
@@ -453,7 +453,7 @@ proto.proto.CryptoAddClaimTransactionBody.serializeBinaryToWriter = function(mes
   f = message.getClaim();
   if (f != null) {
     writer.writeMessage(
-      1,
+      3,
       f,
       proto.proto.Claim.serializeBinaryToWriter
     );
@@ -462,18 +462,18 @@ proto.proto.CryptoAddClaimTransactionBody.serializeBinaryToWriter = function(mes
 
 
 /**
- * optional Claim claim = 1;
+ * optional Claim claim = 3;
  * @return {?proto.proto.Claim}
  */
 proto.proto.CryptoAddClaimTransactionBody.prototype.getClaim = function() {
   return /** @type{?proto.proto.Claim} */ (
-    jspb.Message.getWrapperField(this, proto.proto.Claim, 1));
+    jspb.Message.getWrapperField(this, proto.proto.Claim, 3));
 };
 
 
 /** @param {?proto.proto.Claim|undefined} value */
 proto.proto.CryptoAddClaimTransactionBody.prototype.setClaim = function(value) {
-  jspb.Message.setWrapperField(this, 1, value);
+  jspb.Message.setWrapperField(this, 3, value);
 };
 
 
@@ -490,7 +490,7 @@ proto.proto.CryptoAddClaimTransactionBody.prototype.clearClaim = function() {
  * @return {boolean}
  */
 proto.proto.CryptoAddClaimTransactionBody.prototype.hasClaim = function() {
-  return jspb.Message.getField(this, 1) != null;
+  return jspb.Message.getField(this, 3) != null;
 };
 
 
