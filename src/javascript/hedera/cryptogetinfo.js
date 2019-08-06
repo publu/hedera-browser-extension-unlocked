@@ -30,7 +30,7 @@ function cryptoGetInfo(
 
     let sender = i.accountStringFromAccountID(self.operator.account) // whoever is the operator pays
     let recipient = i.accountStringFromAccountID(self.nodeAccountID) // node account gets paid
-    let amount = 100000
+    let amount = 200000
 
     let recipientList = [
         {
@@ -39,7 +39,7 @@ function cryptoGetInfo(
         }
     ]
 
-    let fee = 100000
+    let fee = 200000
     let tx = cryptoTransfer(
         self,
         sender,
