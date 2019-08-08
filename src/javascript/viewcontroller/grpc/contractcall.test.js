@@ -125,7 +125,7 @@ test('contractcall test', async done => {
 
     const gas = result.params[2]
     const amount = gas
-    const fee = 100000
+    const fee = 200000
     const contract = '0.0.1604' // hard-coded contract id. change this to the one Nik uses
     let memo = i.validMemoBytes('micropayment.memo')
 

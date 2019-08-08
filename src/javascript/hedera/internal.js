@@ -2,6 +2,7 @@ import {
     AccountID,
     Signature,
     SignatureList,
+    SignaturePair,
     FileID,
     ContractID
 } from '../../pbweb/BasicTypes_pb'
@@ -220,6 +221,10 @@ function signWithKeyAndVerify(txBodyBytes, privateKeyHex, publicKeyHex) {
     let sig = new Signature()
     sig.setEd25519(signature)
     return sig
+
+    // let sigPair = new SignaturePair()
+    // sigPair.setEd25519(signature)
+    // return sigPair
 }
 
 /**

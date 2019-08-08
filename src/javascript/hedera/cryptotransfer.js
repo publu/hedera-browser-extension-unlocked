@@ -1,10 +1,16 @@
 import i from './internal'
 import { CryptoTransferTransactionBody } from '../../pbweb/CryptoTransfer_pb'
-import { TransactionID, SignatureList } from '../../pbweb/BasicTypes_pb'
+import {
+    TransactionID,
+    SignatureList,
+    SignatureMap,
+    SignaturePair
+} from '../../pbweb/BasicTypes_pb'
 import { TransactionBody, Transaction } from '../../pbweb/Transaction_pb'
 import forge from 'node-forge'
 import setRecipientTransferLists from './cryptotransferlist'
 import debug from 'debug'
+import { sign } from 'supercop.js'
 
 const log = debug('all:hedera:cryptotransfer')
 
@@ -76,16 +82,21 @@ function cryptoTransfer(
     let publicKeyHex = self.operator.keypair.publicKey
     let sig = i.signWithKeyAndVerify(txBodyBytes, privateKeyHex, publicKeyHex)
 
+    // let sigPair = new SignaturePair()
+    // sigPair.setEd25519(sig)
+    // let sigMap = new SignatureMap()
+    // sigMap.setSigpairList(sigPair)
     let sigList = new SignatureList()
     sigList.setSigsList([sig, sig])
 
     let tx = new Transaction()
     tx.setBody(txBody)
+    // tx.setSigmap(sigMap)
     // tx.setSigs(sigMain.getSignaturelist())
     tx.setSigs(sigList)
-    log('tx body bytes', tx instanceof Transaction)
-    log(tx)
-    log(forge.util.bytesToHex(tx.serializeBinary()))
+    console.log('tx body bytes', tx instanceof Transaction)
+    console.log(tx)
+    console.log(forge.util.bytesToHex(tx.serializeBinary()))
     return tx
 }
 

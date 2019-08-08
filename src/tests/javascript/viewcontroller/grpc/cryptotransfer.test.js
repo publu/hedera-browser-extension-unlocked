@@ -133,6 +133,7 @@ test('Test a crypto transfer', async function(done) {
     const CRYPTOTRANSFER = enumKeyByValue(Tx, Tx.CRYPTOTRANSFER)
     socket = io.connect(paymentServer)
 
+    console.log('here?' + tx)
     socket.on('connect', function() {
         socket.binary(true).emit(CRYPTOTRANSFER, tx.data)
         socket.on(`${CRYPTOTRANSFER}_RESPONSE`, async function(res) {
