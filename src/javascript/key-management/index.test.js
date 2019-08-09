@@ -9,7 +9,6 @@ test('toByteArray', () => {
     const byteArray = toByteArray('ffab')
     expect(byteArray).toEqual([255, 171])
 })
-
 test('sha384 in JavaScript', () => {
     // given the exact same message, our sha384 output will always be the same
     let message = 'abc'
@@ -37,6 +36,8 @@ test('data views are equal', () => {
 
     let notequal = dataViewsAreEqual(b, c)
     expect(notequal).toBeFalsy()
+})
+    expect(md3Hex).not.toBe(mdHex)
 })
 
 // test('deciphering', () => {

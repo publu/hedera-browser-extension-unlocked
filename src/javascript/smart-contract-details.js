@@ -2,11 +2,9 @@ import { getLocalStorage } from './models/db'
 import { tabsQuery } from './chrome-promise'
 import { buttonState } from './ui-utils/buttons'
 import getContractCallController from './viewcontroller/grpc/contractcall'
-import {
-    tinyBarsToHBarsCurr,
+import { tinyBarsToHBarsCurr, tinyBarsToDollarsUnit } from './hedera/currency'
     tinyBarsToDollarsUnit,
     tinyBarsToHBarsUnit
-} from './hedera/currency'
 import debug from 'debug'
 
 const log = debug('all:smart-contract-details')

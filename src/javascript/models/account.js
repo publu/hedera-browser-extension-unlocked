@@ -167,6 +167,60 @@ class Account extends AbstractLocalStorage {
                     hBars: tinyBarsToHBarsCurr(balance, 8),
                     USD: `$${USD}`
                 }
+                }
+            // less than 999.9999 USD
+            if (balance < 833333333325) {
+                let USD = tinyBarsToDollarsUnit(balance).toFixed(4)
+                log('less than 999.9999 USD, USD is', USD)
+                return {
+                    tinyBars: balance,
+                    hBars: tinyBarsToHBarsCurr(balance, 8),
+                    USD: `$${USD}`
+                }
+            }
+            // less than 99 999.9999 USD
+            if (balance < 83333333333325) {
+                let USD = tinyBarsToDollarsUnit(balance).toFixed(3)
+                log('less than 99 999.9999 USD, USD is', USD)
+                return {
+                    tinyBars: balance,
+                    hBars: tinyBarsToHBarsCurr(balance, 8),
+                    USD: `$${USD}`
+                }
+            }
+
+            let USD = tinyBarsToDollarsUnit(balance).toFixed(2)
+            log('more than 99 999.9999USD', USD)
+            return {
+                tinyBars: balance,
+                hBars: tinyBarsToHBarsCurr(balance, 8),
+                USD: `$${USD}`
+            }
+            // return {
+            //     tinyBars: balance,
+            //     hBars: tinyBarsToHBarsCurr(balance, 8),
+            //     USD: tinyBarsToDollarsUnit(balance)
+            // }
+            }
+            // less than 0.00999 USD
+            if (balance < 8333325) {
+                let USD = tinyBarsToDollarsUnit(balance).toFixed(8)
+                log('less than 0.00999 USD, USD is ', USD)
+                return {
+                    tinyBars: balance,
+                    hBars: tinyBarsToHBarsCurr(balance, 8),
+                    USD: `$${USD}`
+                }
+            }
+            // less than 0.9999 USD
+            if (balance < 833333325) {
+                let USD = tinyBarsToDollarsUnit(balance).toFixed(6)
+                log('less than 0.9999 USDs, USD is ', USD)
+                return {
+                    tinyBars: balance,
+                    hBars: tinyBarsToHBarsCurr(balance, 8),
+                    USD: `$${USD}`
+                }
             }
             // less than 999.9999 USD
             if (balance < 833333333325) {
