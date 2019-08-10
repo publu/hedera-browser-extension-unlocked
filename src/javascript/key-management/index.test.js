@@ -37,8 +37,6 @@ test('data views are equal', () => {
     let notequal = dataViewsAreEqual(b, c)
     expect(notequal).toBeFalsy()
 })
-    expect(md3Hex).not.toBe(mdHex)
-})
 
 // test('deciphering', () => {
 //     if (CRYPTO_TEST === false) {

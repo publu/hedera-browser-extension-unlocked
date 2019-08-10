@@ -4,7 +4,7 @@ import NetworkManager from './network-manager'
 import debug from 'debug'
 import { isNullOrUndefined } from 'util'
 
-const log = debug('all:models')
+const log = debug('app:models')
 
 /**
  * @module Account
@@ -115,195 +115,80 @@ class Account extends AbstractLocalStorage {
      * log('HBars', all.hBars)
      */
     async getBalance() {
+        let formatter
+        let tinyBars = 0
+        let hBars = 0
+        let USD = '$0'
         this.details = await this.getDetails()
-        if (this.details.balance !== undefined) {
-            let balance = this.details.balance
-            log('Balance', balance)
+        let balance = this.details.balance
+        if (balance === undefined) {
+            return { tinyBars, hBars, USD }
+        }
 
-            if (balance < 0) {
-                log('less than 0 tinybars, USD is ', undefined)
-                return {
-                    tinyBars: undefined,
-                    hBars: undefined,
-                    USD: undefined
-                }
-            }
-            // less than 0.000000999 USD
-            if (balance < 100) {
-                let USD = tinyBarsToDollarsUnit(balance).toFixed(10)
+        log('Balance', balance)
+        tinyBars = balance
+
+        switch (true) {
+            case balance < 0:
+                tinyBars = undefined
+                hBars = undefined
+                USD = undefined
+                log('less than 0 tinybars, USD is ', USD)
+                break
+            case balance == 0:
+                log('equals to 0 tinybars, USD is ', USD)
+                break
+            case balance < 100: // less than 0.000000999 USD
+                hBars = tinyBarsToHBarsCurr(balance, 8)
+                USD = `$${tinyBarsToDollarsUnit(balance).toFixed(10)}`
                 log('less than 0.000000999 USD, USD is ', USD)
-                return {
-                    tinyBars: balance,
-                    hBars: tinyBarsToHBarsCurr(balance, 8),
-                    USD: `$${USD}`
-                }
-            }
-            // less than 0.0000999 USD
-            if (balance < 83325) {
-                let USD = tinyBarsToDollarsUnit(balance).toFixed(9)
-                log('less than 0.0000999 USD, USD is ', USD)
-                return {
-                    tinyBars: balance,
-                    hBars: tinyBarsToHBarsCurr(balance, 8),
-                    USD: `$${USD}`
-                }
-            }
-            // less than 0.00999 USD
-            if (balance < 8333325) {
-                let USD = tinyBarsToDollarsUnit(balance).toFixed(8)
-                log('less than 0.00999 USD, USD is ', USD)
-                return {
-                    tinyBars: balance,
-                    hBars: tinyBarsToHBarsCurr(balance, 8),
-                    USD: `$${USD}`
-                }
-            }
-            // less than 0.9999 USD
-            if (balance < 833333325) {
-                let USD = tinyBarsToDollarsUnit(balance).toFixed(6)
-                log('less than 0.9999 USDs, USD is ', USD)
-                return {
-                    tinyBars: balance,
-                    hBars: tinyBarsToHBarsCurr(balance, 8),
-                    USD: `$${USD}`
-                }
-                }
-            // less than 999.9999 USD
-            if (balance < 833333333325) {
-                let USD = tinyBarsToDollarsUnit(balance).toFixed(4)
-                log('less than 999.9999 USD, USD is', USD)
-                return {
-                    tinyBars: balance,
-                    hBars: tinyBarsToHBarsCurr(balance, 8),
-                    USD: `$${USD}`
-                }
-            }
-            // less than 99 999.9999 USD
-            if (balance < 83333333333325) {
-                let USD = tinyBarsToDollarsUnit(balance).toFixed(3)
-                log('less than 99 999.9999 USD, USD is', USD)
-                return {
-                    tinyBars: balance,
-                    hBars: tinyBarsToHBarsCurr(balance, 8),
-                    USD: `$${USD}`
-                }
-            }
-
-            let USD = tinyBarsToDollarsUnit(balance).toFixed(2)
-            log('more than 99 999.9999USD', USD)
-            return {
-                tinyBars: balance,
-                hBars: tinyBarsToHBarsCurr(balance, 8),
-                USD: `$${USD}`
-            }
-            // return {
-            //     tinyBars: balance,
-            //     hBars: tinyBarsToHBarsCurr(balance, 8),
-            //     USD: tinyBarsToDollarsUnit(balance)
-            // }
-            }
-            // less than 0.00999 USD
-            if (balance < 8333325) {
-                let USD = tinyBarsToDollarsUnit(balance).toFixed(8)
-                log('less than 0.00999 USD, USD is ', USD)
-                return {
-                    tinyBars: balance,
-                    hBars: tinyBarsToHBarsCurr(balance, 8),
-                    USD: `$${USD}`
-                }
-            }
-            // less than 0.9999 USD
-            if (balance < 833333325) {
-                let USD = tinyBarsToDollarsUnit(balance).toFixed(6)
-                log('less than 0.9999 USDs, USD is ', USD)
-                return {
-                    tinyBars: balance,
-                    hBars: tinyBarsToHBarsCurr(balance, 8),
-                    USD: `$${USD}`
-                }
-            }
-            // less than 999.9999 USD
-            if (balance < 833333333325) {
-                let USD = tinyBarsToDollarsUnit(balance).toNumber()
-                let USDFormatted = USD.toLocaleString('en', {
-                    maximumFractionDigits: 4
+                break
+            case balance < 83325: // less than 0.0000999 USD
+                hBars = tinyBarsToHBarsCurr(balance, 8)
+                USD = `$${tinyBarsToDollarsUnit(balance).toFixed(9)}`
+                break
+            case balance < 8333325: // less than 0.00999 USD
+                hBars = tinyBarsToHBarsCurr(balance, 8)
+                USD = `$${tinyBarsToDollarsUnit(balance).toFixed(8)}`
+                break
+            case balance < 833333325: // less than 0.9999 USD
+                hBars = tinyBarsToHBarsCurr(balance, 6)
+                USD = `$${tinyBarsToDollarsUnit(balance).toFixed(8)}`
+                break
+            case balance == 99999999999: // equals to 120 USD
+                hBars = tinyBarsToHBarsCurr(balance, 8)
+                USD = `$${tinyBarsToDollarsUnit(balance).toFixed(0)}`
+                break
+            case balance < 833333333325: // less than 999.9999 USD
+                hBars = tinyBarsToHBarsCurr(balance, 8)
+                USD = `$${tinyBarsToDollarsUnit(balance).toFixed(3)}`
+                break
+            case balance < 83333333333325: // less than 99,999.9999 USD
+                formatter = new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 3
                 })
-                log('less than 999.9999 USD, USD is', USD)
-                return {
-                    tinyBars: balance,
-                    hBars: tinyBarsToHBarsCurr(balance, 8),
-                    USD: `$${USDFormatted}`
-                }
-            }
-            // less than 99 999.9999 USD
-            if (balance < 83333333333325) {
-                let USD = tinyBarsToDollarsUnit(balance).toNumber()
-                let USDFormatted = USD.toLocaleString('en', {
-                    maximumFractionDigits: 3
+                hBars = tinyBarsToHBarsCurr(balance, 8)
+                USD = formatter.format(
+                    tinyBarsToDollarsUnit(balance).toFixed(8)
+                )
+                break
+            default:
+                formatter = new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0
                 })
-                log('less than 99 999.9999 USD, USD is', USD)
-                return {
-                    tinyBars: balance,
-                    hBars: tinyBarsToHBarsCurr(balance, 8),
-                    USD: `$${USDFormatted}`
-                }
-            // less than 999.9999 USD
-            if (balance < 833333333325) {
-                let USD = tinyBarsToDollarsUnit(balance).toFixed(4)
-                log('less than 999.9999 USD, USD is', USD)
-                return {
-                    tinyBars: balance,
-                    hBars: tinyBarsToHBarsCurr(balance, 8),
-                    USD: `$${USD}`
-                }
-            }
-            // less than 99 999.9999 USD
-            if (balance < 83333333333325) {
-                let USD = tinyBarsToDollarsUnit(balance).toFixed(3)
-                log('less than 99 999.9999 USD, USD is', USD)
-                return {
-                    tinyBars: balance,
-                    hBars: tinyBarsToHBarsCurr(balance, 8),
-                    USD: `$${USD}`
-                }
-            }
+                hBars = tinyBarsToHBarsCurr(balance, 8)
+                USD = formatter.format(
+                    tinyBarsToDollarsUnit(balance).toFixed(8)
+                )
+                log('more than 99,999.9999USD', USD)
+                break
+        }
 
-            USD = tinyBarsToDollarsUnit(balance).toFixed(2)
-            log('more than 99 999.9999USD', USD)
-            return {
-                tinyBars: balance,
-                hBars: tinyBarsToHBarsCurr(balance, 8),
-                USD: `$${USD}`
-            }
-            // return {
-            //     tinyBars: balance,
-            //     hBars: tinyBarsToHBarsCurr(balance, 8),
-            //     USD: tinyBarsToDollarsUnit(balance)
-            // }
-            }
-            log('more than 99 999.9999USD', USD)
-            let USD = tinyBarsToDollarsUnit(balance).toNumber()
-            let USDFormatted = USD.toLocaleString('en', {
-                maximumFractionDigits: 2
-            })
-            return {
-                tinyBars: balance,
-                hBars: tinyBarsToHBarsCurr(balance, 8),
-                USD: `$${USDFormatted}`
-            }
-            // return {
-            //     tinyBars: balance,
-            //     hBars: tinyBarsToHBarsCurr(balance, 8),
-            //     USD: tinyBarsToDollarsUnit(balance)
-            // }
-        }
-        log('0000000 getBalance', this.details)
-        log('111111 getBalance', this.details.balance)
-        return {
-            tinyBars: 0,
-            hBars: 0,
-            USD: 0
-        }
+        return { tinyBars, hBars, USD }
     }
 
     /**

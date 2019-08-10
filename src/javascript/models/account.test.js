@@ -1,5 +1,8 @@
 import testAccount1 from './testdata/account'
 import Account from './account'
+import debug from 'debug'
+
+const log = debug('app:test:models:account')
 
 test('Instantiate account, getDetails, setDetails', async () => {
     let a = await new Account().init('')
@@ -57,7 +60,7 @@ test('getBalance less than 0.000000999 USD', async () => {
     expect(all.USD).toBe('$0.0000000012')
 })
 
-test('getBalance less than 999.9999 USD', async () => {
+test('getBalance equals to 120 USD', async () => {
     let a = await new Account().init(testAccount1)
     await a.setBalance(99999999999)
     expect(a.details.balance).toBe(99999999999)
@@ -87,10 +90,10 @@ test('getBalance less than 999.9999 USD', async () => {
     let all = await a.getBalance()
     expect(all.tinyBars).toBe(83566329273)
     expect(all.hBars).toBe('835.66329273 ℏ')
-    expect(all.USD).toBe('$100.2796')
+    expect(all.USD).toBe('$100.280')
 })
 
-test('getBalance less than 99 999.9999 USD', async () => {
+test('getBalance less than 99,999.9999 USD', async () => {
     let a = await new Account().init(testAccount1)
     await a.setBalance(8993568329273)
     expect(a.details.balance).toBe(8993568329273)
@@ -100,7 +103,7 @@ test('getBalance less than 99 999.9999 USD', async () => {
     expect(all.USD).toBe('$10,792.282')
 })
 
-test('getBalance more than 99 999.9999 USD', async () => {
+test('getBalance more than 99,999.9999 USD', async () => {
     let a = await new Account().init(testAccount1)
     await a.setBalance(103333333333325)
     expect(a.details.balance).toBe(103333333333325)
@@ -125,5 +128,5 @@ test('getBalance if details are undefined', async () => {
     let all = await a.getBalance()
     expect(all.tinyBars).toBe(0)
     expect(all.hBars).toBe(0)
-    expect(all.USD).toBe(0)
+    expect(all.USD).toBe('$0')
 })
