@@ -2,9 +2,7 @@ import { getLocalStorage } from './models/db'
 import { tabsQuery } from './chrome-promise'
 import { buttonState } from './ui-utils/buttons'
 import getContractCallController from './viewcontroller/grpc/contractcall'
-import { tinyBarsToHBarsCurr, tinyBarsToDollarsUnit } from './hedera/currency'
-    tinyBarsToDollarsUnit,
-    tinyBarsToHBarsUnit
+import { tinyBarsToDollarsUnit } from './hedera/currency'
 import debug from 'debug'
 
 const log = debug('all:smart-contract-details')
@@ -72,8 +70,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (contractTag !== undefined) {
         let params = contractTag.params
         let contractid = contractTag.contractid
-        let transactionCostInUsdObj
-        let transactionCostInHbar
+        let transactionCostInUsdObj = {}
+        let transactionCostInHbar = 0
         if (transactionCostEl !== undefined) {
             transactionCostInUsdObj = tinyBarsToDollarsUnit(200000)
             transactionCostInHbar = tinyBarsToHBarsUnit(200000)
@@ -90,8 +88,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         let purchasedPrice = params[1]
-        let purchasedPriceInUsdObj
-        let purchasedPriceInHbar
+        let purchasedPriceInUsdObj = {}
+        let purchasedPriceInHbar = 0
         if (purchasedPrice !== undefined) {
             purchasedPriceInUsdObj = tinyBarsToDollarsUnit(
                 parseInt(purchasedPrice)
@@ -100,8 +98,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             purchasedPriceInHbar = tinyBarsToHBarsUnit(parseInt(purchasedPrice))
             purchasedPriceEl.value =
                 `$ ${purchasedPriceInUsd}` +
-                ' / ' +
-                `${purchasedPriceInHbar.toPrecision(8)} ℏ`
                 ' / ' +
                 `${purchasedPriceInHbar.toPrecision(8)} ℏ`
         }

@@ -228,7 +228,6 @@ let isElement = function(o) {
         ? o instanceof HTMLElement //DOM2
         : o &&
               typeof o === 'object' &&
-              o !== null &&
               o.nodeType === 1 &&
               typeof o.nodeName === 'string'
 }

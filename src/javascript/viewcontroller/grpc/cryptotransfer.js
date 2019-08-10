@@ -46,8 +46,7 @@ let count = 0
  */
 async function cryptoTransferController(micropayment, port, urlString) {
     // connect to micropayment-server and pass the request, and get a response
-    let memo = i.validMemoBytes(micropayment.memo)
-
+    i.validMemoBytes(micropayment.memo)
 
     let parsedData = await cryptoTransferTx(micropayment, port, urlString)
     let data = parsedData.data

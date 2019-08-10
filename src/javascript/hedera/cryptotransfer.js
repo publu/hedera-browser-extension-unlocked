@@ -1,16 +1,10 @@
 import i from './internal'
 import { CryptoTransferTransactionBody } from '../../pbweb/CryptoTransfer_pb'
-import {
-    TransactionID,
-    SignatureList,
-    SignatureMap,
-    SignaturePair
-} from '../../pbweb/BasicTypes_pb'
+import { TransactionID, SignatureList } from '../../pbweb/BasicTypes_pb'
 import { TransactionBody, Transaction } from '../../pbweb/Transaction_pb'
 import forge from 'node-forge'
 import setRecipientTransferLists from './cryptotransferlist'
 import debug from 'debug'
-import { sign } from 'supercop.js'
 
 const log = debug('all:hedera:cryptotransfer')
 
